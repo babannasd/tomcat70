@@ -5,27 +5,43 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.tomcat.util.descriptor;
+
+import java.io.InputStream;
+
+import org.apache.tomcat.util.ExceptionUtils;
+import org.xml.sax.InputSource;
+
+public final class InputSourceUtil {
+
+    private InputSourceUtil() {
+        // Utility class. Hide default constructor.
+    }
 
 
-package javax.ejb;
+    public static void close(InputSource inputSource) {
+        if (inputSource == null) {
+            // Nothing to do
+            return;
+        }
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+        InputStream is = inputSource.getByteStream();
+        if (is != null) {
+            try {
+                is.close();
+            } catch (Throwable t) {
+                ExceptionUtils.handleThrowable(t);
+            }
+        }
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-
-public @interface EJBs {
-   EJB[] value();
+    }
 }

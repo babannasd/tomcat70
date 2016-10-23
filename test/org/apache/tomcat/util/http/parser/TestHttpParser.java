@@ -13,30 +13,16 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
-package org.apache.tomcat.util.bcel.classfile;
+package org.apache.tomcat.util.http.parser;
 
-import org.apache.tomcat.util.bcel.Const;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class ClassElementValue extends ElementValue
-{
-    // For primitive types and string type, this points to the value entry in
-    // the cpool
-    // For 'class' this points to the class entry in the cpool
-    private final int idx;
+public class TestHttpParser {
 
-    ClassElementValue(final int type, final int idx, final ConstantPool cpool) {
-        super(type, cpool);
-        this.idx = idx;
-    }
-
-
-    @Override
-    public String stringifyValue()
-    {
-        final ConstantUtf8 cu8 = (ConstantUtf8) super.getConstantPool().getConstant(idx,
-                Const.CONSTANT_Utf8);
-        return cu8.getBytes();
+    @Test
+    public void testTokenDel() {
+        Assert.assertFalse("DEL is not a token", HttpParser.isToken(127));
     }
 }

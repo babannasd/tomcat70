@@ -57,7 +57,127 @@
   They eventually become mixed with the numbered issues. (I.e., numbered
   issues do not "pop up" wrt. others).
 -->
-<section name="Tomcat 7.0.71 (violetagg)">
+<section name="Tomcat 7.0.73 (violetagg)">
+  <subsection name="Catalina">
+    <changelog>
+      <fix>
+        <bug>60117</bug>: Ensure that the name of <code>LogLevel</code> is
+        localized when using <code>OneLineFormatter</code>. Patch provided by
+        Tatsuya Bessho. (kfujino)
+      </fix>
+      <fix>
+        <bug>60167</bug>: Ignore empty lines in <code>/etc/passwd</code> files
+        when using the <code>PasswdUserDatabase</code>. (markt)
+      </fix>
+      <fix>
+        Improve the access checks for linked global resources to handle the case
+        where the current class loader is a child of the web application class
+        loader. (markt)
+      </fix>
+      <fix>
+        <bug>60199</bug>: Log a warning if deserialization issues prevent a
+        session attribute from being loaded. (markt)
+      </fix>
+      <fix>
+        Correctly test for control characters when reading the provided shutdown
+        password. (markt)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="Coyote">
+    <changelog>
+      <fix>
+        <bug>60123</bug>: Avoid potential threading issues that could cause
+        excessively large vales to be returned for the processing time of
+        a current request. (markt)
+      </fix>
+      <fix>
+        <bug>60174</bug>: Log instances of <code>HeadersTooLargeException</code>
+        during request processing. (markt)
+      </fix>
+      <fix>
+        Correct the HTTP header parser so that DEL is not treated as a valid
+        token character. (markt)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="jdbc-pool">
+    <changelog>
+      <fix>
+        <bug>60099</bug>: Ensure that use all method arguments as a cache key
+        when using <code>StatementCache</code>. (kfujino)
+      </fix>
+      <fix>
+        <bug>60139</bug>: Correct Javadocs for
+        <code>PoolConfiguration.getValidationInterval</code> and
+        <code>setValidationInterval</code>. Reported by Phillip Webb. (kfujino)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="Web applications">
+    <changelog>
+      <add>
+        Add an example of using the <code>classesToInitialize</code> attribute
+        of the <code>JreMemoryLeakPreventionListener</code> to the documentation
+        web application. Based on a patch by Cris Berneburg. (markt)
+      </add>
+      <fix>
+        <bug>60192</bug>: Correct a typo in the status output of the Manager
+        application. Patch provided by  Radhakrishna Pemmasani. (markt)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="Other">
+    <changelog>
+      <add>
+        Add documentation to the bin/catalina.bat script to remind users that
+        environment variables don't affect the configuration of Tomcat when
+        run as a Windows Service. Based upon a documentation patch by
+        James H.H. Lampert. (schultz)
+      </add>
+    </changelog>
+  </subsection>
+</section>
+<section name="Tomcat 7.0.72 (violetagg)" rtext="released 2016-09-19">
+  <subsection name="Catalina">
+    <changelog>
+      <fix>
+        Ensure <code>Digester.useContextClassLoader</code> is considered in
+        case the class loader is used. (violetagg)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="Jasper">
+    <changelog>
+      <fix>
+        <bug>60101</bug>: Remove preloading of the class that was deleted.
+        (violetagg)
+      </fix>
+    </changelog>
+  </subsection>
+  <subsection name="jdbc-pool">
+    <changelog>
+      <fix>
+        Notify jmx when returning the connection that has been marked suspect.
+        (kfujino)
+      </fix>
+      <fix>
+        Ensure that the <code>POOL_EMPTY</code> notification has been added to
+        the jmx notification types. (kfujino)
+      </fix>
+      <add>
+        <bug>60151</bug>: Improve the exception error messages when a
+        <code>ResourceLink</code> fails to specify the type, specifies an
+        unknown type or specifies the wrong type. (markt)
+      </add>
+      <update>
+        Update the packaged version of the Tomcat Native Library to 1.2.10 to
+        pick up the latest Windows binaries built with OpenSSL 1.0.2j. (markt)
+      </update>
+    </changelog>
+  </subsection>
+</section>
+<section name="Tomcat 7.0.71 (violetagg)" rtext="not released">
   <subsection name="Catalina">
     <changelog>
       <fix>
@@ -130,6 +250,36 @@
         Switch the CGI servlet to the standard logging mechanism and remove
         support for the debug attribute. (markt)
       </fix>
+      <add>
+        Add a new initialisation parameter, <code>envHttpHeaders</code>, to
+        the CGI Servlet to mitigate <a href="https://httpoxy.org">httpoxy</a>
+        (<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-5388"
+        >CVE-2016-5388</a>) by default and to provide a mechanism that can be
+        used to mitigate any future, similar issues. (markt)
+      </add>
+      <add>
+        When adding and removing <code>ResourceLink</code>s dynamically, ensure
+        that the global resource is only visible via the
+        <code>ResourceLinkFactory</code> when it is meant to be. (markt)
+      </add>
+      <fix>
+        <bug>60008</bug>: When processing CORs requests, treat any origin with a
+        URI scheme of <code>file</code> as a valid origin. (markt)
+      </fix>
+      <fix>
+        Improve handling of exceptions during a Lifecycle events triggered by a
+        state transition. The exception is now caught and the component is now
+        placed into the <code>FAILED</code> state. (markt)
+      </fix>
+      <fix>
+        Fix a file descriptor leak when reading the global web.xml. (markt)
+      </fix>
+      <fix>
+        <bug>60041</bug>: Better error message if a JAR is deleted while a web
+        application is running. Note: Deleting a JAR while the application is
+        running is not supported and errors are expected. Based on a patch by
+        gehui. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Coyote">
@@ -143,6 +293,19 @@
         <bug>59904</bug>: Add a limit (default 200) for the number of cookies
         allowed per request. Based on a patch by gehui. (markt)
       </fix>
+      <fix>
+        Make timing attacks against the Realm implementations harder. (schultz)
+      </fix>
+      <add>
+        Refactor the code that implements the requirement that a call to
+        <code>complete()</code> or <code>dispatch()</code> made from a
+        non-container thread before the container initiated thread that called
+        <code>startAsync()</code> completes must be delayed until the container
+        initiated thread has completed. Rather than implementing this by
+        blocking the non-container thread, extend the internal state machine to
+        track this. This removes the possibility that blocking the non-container
+        thread could trigger a deadlock. (markt)  
+      </add>
     </changelog>
   </subsection>
   <subsection name="Jasper">
@@ -155,6 +318,10 @@
       <fix>
         Improve the error handling for custom tags to ensure that the tag is
         returned to the pool or released and destroyed once used. (markt)
+      </fix>
+      <fix>
+        Fixed StringIndexOutOfBoundsException. Based on a patch provided by
+        wuwen via Github. (violetagg)
       </fix>
     </changelog>
   </subsection>
@@ -197,6 +364,10 @@
         MBeans Descriptors How-To is moved to
         <code>mbeans-descriptors-howto.html</code>. Patch provided by Radoslav
         Husar. (violetagg)
+      </fix>
+      <fix>
+        <bug>60034</bug>: Correct a typo in the Manager How-To page of the
+        documentation web application. (markt) 
       </fix>
     </changelog>
   </subsection>
@@ -246,6 +417,19 @@
         Ensure that the <code>ResultSet</code> is returned as Proxy object when
         enabling the <code>StatementDecoratorInterceptor</code>. (kfujino)
       </fix>
+      <fix>
+        <bug>60043</bug>: Ensure that the <code>suspectTimeout</code> works
+        without removing connection when the <code>removeAbandoned</code> is
+        disabled. (kfujino)
+      </fix>
+      <fix>
+        Add log message of when returning the connection that has been marked
+        suspect. (kfujino)
+      </fix>
+      <fix>
+        Correct Javadoc for <code>ConnectionPool.suspect()</code>. Based on a
+        patch by Yahya Cahyadi. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Other">
@@ -261,6 +445,22 @@
       </update>
       <fix>
         Fixed typos in mbeans-descriptors.xml files. (violetagg)
+      </fix>
+      <update>
+        Update the internal fork of Commons BCEL to r1757132 to align with the
+        BCEL 6 release. (markt)
+      </update>
+      <update>
+        Update the internal fork of Commons Codec to r1757174. Code formatting
+        changes only. (markt)
+      </update>
+      <update>
+        Update the internal fork of Commons FileUpload to afdedc9. This pulls in
+        a fix to improve the performance with large multipart boundaries.
+        (markt)
+      </update>
+      <fix>
+        Update the download location for Objenesis. (violetagg)
       </fix>
     </changelog>
   </subsection>
@@ -876,6 +1076,10 @@
       <fix>
         Fix handling of missing messages in
         <code>org.apache.el.util.MessageFactory</code>. (violetagg)
+      </fix>
+      <fix>
+        Ignore <code>engineOptionsClass</code> and <code>scratchdir</code> when
+        running under a security manager. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -3825,7 +4029,7 @@
       </fix>
       <add>
         Add a work around for validating XML documents (often TLDs) that use
-        just the file name to refer to refer to the JavaEE schema on which they
+        just the file name to refer to the JavaEE schema on which they
         are based. (markt)
       </add>
       <fix>
@@ -8854,7 +9058,7 @@
       <fix>
         When unloading JSPs due to configuration of the
         <code>maxLoadedJsps</code> initialisation parameter, the unloading code
-        was retaining a reference to the to the unloaded JSP preventing the
+        was retaining a reference to the unloaded JSP preventing the
         associated class from being unloaded until the JSP that replaced it was
         itself unloaded. (markt) 
       </fix>
